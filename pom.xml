@@ -13,5 +13,6 @@
     <modules>
         <module>consumer</module>
         <module>producer</module>
+        <module>user-management</module>
     </modules>
 </project>
