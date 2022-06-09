@@ -16,5 +16,6 @@
         <module>user-management</module>
         <module>user-management-consumer</module>
         <module>product-management</module>
+        <module>product-management-consumer</module>
     </modules>
 </project>
