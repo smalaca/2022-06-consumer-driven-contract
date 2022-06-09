@@ -17,6 +17,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("users")
@@ -34,7 +35,7 @@ public class UserRestController {
         } else {
             User user = new User(command.getLogin(), command.getPassword(), command.getGroup());
             UserDto dto = repository.save(user).asDto();
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.status(CREATED).body(dto);
         }
     }
 

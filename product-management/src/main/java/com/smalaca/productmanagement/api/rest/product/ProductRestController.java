@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("products")
@@ -38,7 +39,7 @@ public class ProductRestController {
             } else {
                 Product product = Product.create(command.getName(), command.getDescription(), command.getPrice(), command.getShopId());
                 ProductDto dto = productRepository.save(product).asDto();
-                return ResponseEntity.ok(dto);
+                return ResponseEntity.status(CREATED).body(dto);
             }
         } else {
             return ResponseEntity.notFound().build();
