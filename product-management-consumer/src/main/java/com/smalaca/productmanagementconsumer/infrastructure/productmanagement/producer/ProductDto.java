@@ -23,7 +23,7 @@ public class ProductDto {
     private BigDecimal price;
     private Long shopId;
 
-    ProductDto(String name, String description, BigDecimal price, Long shopId) {
+    public ProductDto(String name, String description, BigDecimal price, Long shopId) {
         this.name = name;
         this.description = description;
         this.price = price;
