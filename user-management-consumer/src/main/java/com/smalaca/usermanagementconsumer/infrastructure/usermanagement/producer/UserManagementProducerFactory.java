@@ -6,7 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class UserManagementProducerFactory {
-    private static final String URL = "http://localhost:8100/users";
+    private static final String URL = "http://localhost:8100/";
 
     @Bean
     public UserManagementProducer userManagementProducer() {

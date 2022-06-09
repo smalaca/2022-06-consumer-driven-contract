@@ -19,7 +19,7 @@ public class UserManagementProducer {
 
     Optional<Long> create(UserDto userDto) {
         try {
-            UserDto response = restTemplate.postForObject(url, userDto, UserDto.class);
+            UserDto response = restTemplate.postForObject(url + "/users", userDto, UserDto.class);
             return Optional.of(response.getId());
         } catch (HttpClientErrorException exception) {
             return Optional.empty();
@@ -27,12 +27,20 @@ public class UserManagementProducer {
     }
 
     public List<UserDto> findAllForGroup(String groupName) {
-        UserDto[] users = restTemplate.getForObject(url + "?group=" + groupName, UserDto[].class);
+        UserDto[] users = restTemplate.getForObject(url + "/users?group=" + groupName, UserDto[].class);
 
         return asList(users);
     }
 
     void delete(Long id) {
-        restTemplate.delete(url + "/" + id);
+        restTemplate.delete(url + "/users/" + id);
+    }
+
+    String hello() {
+        return restTemplate.getForObject(url + "/start", String.class);
+    }
+
+    String hello(String userName) {
+        return restTemplate.getForObject(url + "/start/" + userName, String.class);
     }
 }
