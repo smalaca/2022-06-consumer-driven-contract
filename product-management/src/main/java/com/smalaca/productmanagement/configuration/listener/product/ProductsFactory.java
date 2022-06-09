@@ -18,8 +18,8 @@ public class ProductsFactory {
 
     @EventListener
     public void listen(ContextRefreshedEvent event) {
-        repository.save(Product.create("Water", "Something to drink", BigDecimal.valueOf(123.45), 13L));
-        repository.save(Product.create("Tea", "Good for breakfast", BigDecimal.valueOf(13.42), 13L));
-        repository.save(Product.create("Coffee", "The best drink ever", BigDecimal.valueOf(321.12), 13L));
+        repository.save(new Product("Water", "ABC123", "Something to drink", BigDecimal.valueOf(123.45), 13L));
+        repository.save(new Product("Tea", "XYZ987", "Good for breakfast", BigDecimal.valueOf(13.42), 13L));
+        repository.save(new Product("Coffee", "A1B2C3", "The best drink ever", BigDecimal.valueOf(321.12), 13L));
     }
 }

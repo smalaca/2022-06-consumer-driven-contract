@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("shop")
+@RequestMapping("shops")
 public class ShopRestController {
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
