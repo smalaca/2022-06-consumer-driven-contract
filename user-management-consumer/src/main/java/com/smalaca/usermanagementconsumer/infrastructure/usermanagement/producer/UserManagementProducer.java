@@ -26,7 +26,7 @@ public class UserManagementProducer {
         }
     }
 
-    List<UserDto> findAllForGroup(String groupName) {
+    public List<UserDto> findAllForGroup(String groupName) {
         UserDto[] users = restTemplate.getForObject(url + "?group=" + groupName, UserDto[].class);
 
         return asList(users);

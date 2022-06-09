@@ -1,6 +1,5 @@
 package com.smalaca.usermanagementconsumer.infrastructure.usermanagement.producer;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ public class UserDto {
     private String password;
     private String group;
 
-    UserDto(String login, String password, String group) {
+    public UserDto(String login, String password, String group) {
         this.login = login;
         this.password = password;
         this.group = group;
