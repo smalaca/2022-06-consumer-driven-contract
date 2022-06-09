@@ -20,7 +20,7 @@ public class ProductManagementProducer {
 
     Optional<Long> create(ProductDto productDto) {
         try {
-            ProductDto response = restTemplate.postForObject(url, productDto, ProductDto.class);
+            ProductDto response = restTemplate.postForObject(url + "/products", productDto, ProductDto.class);
             return Optional.of(response.getId());
         } catch (HttpClientErrorException exception) {
             return Optional.empty();
@@ -29,7 +29,7 @@ public class ProductManagementProducer {
 
     public List<ProductDto> findAllForShopId(Long shopId) {
         try {
-            ProductDto[] products = restTemplate.getForObject(url + "?shopId=" + shopId, ProductDto[].class);
+            ProductDto[] products = restTemplate.getForObject(url + "/products?shopId=" + shopId, ProductDto[].class);
             return asList(products);
         } catch (HttpClientErrorException exception) {
             return emptyList();
@@ -37,6 +37,15 @@ public class ProductManagementProducer {
     }
 
     void delete(Long id) {
-        restTemplate.delete(url + "/" + id);
+        restTemplate.delete(url + "/products/" + id);
+    }
+
+    Optional<String> summary(long shopId) {
+        try {
+            String response = restTemplate.getForObject(url + "/shops/summary/" + shopId, String.class);
+            return Optional.of(response);
+        } catch (HttpClientErrorException exception) {
+            return Optional.empty();
+        }
     }
 }
