@@ -11,8 +11,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>consumer</module>
-        <module>producer</module>
         <module>user-management</module>
         <module>user-management-consumer</module>
         <module>product-management</module>
