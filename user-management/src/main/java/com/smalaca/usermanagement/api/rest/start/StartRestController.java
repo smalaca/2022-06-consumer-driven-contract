@@ -10,6 +10,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("start")
 public class StartRestController {
+//    /start/sebastian
+//        200
+//        Hello sebastian!
+//    /start
+//        200
+//        Hello guest!
     @GetMapping(value = {"", "/{user}"})
     public String start(@PathVariable Optional<String> user) {
         if (user.isPresent()) {
