@@ -1,21 +1,21 @@
 package com.smalaca.productmanagementconsumer.infrastructure.productmanagement.producer;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@AutoConfigureStubRunner(
+        ids = {"com.smalaca:product-management:+:stubs:8200"},
+        stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 class ProductManagementProducerShopSummaryTest {
-    private final ProductManagementProducer producer = new ProductManagementProducerFactory().productManagementProducer();
-
-    @BeforeEach
-    void removeAllFromShop() {
-        producer.findAllForShopId(42L).forEach(dto -> {
-            producer.delete(dto.getId());
-        });
-    }
+    @Autowired private ProductManagementProducer producer;
 
     @Test
     void shouldSummarizeShopWithProducts() {
