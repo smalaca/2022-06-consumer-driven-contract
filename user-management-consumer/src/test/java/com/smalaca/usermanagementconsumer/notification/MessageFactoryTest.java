@@ -1,33 +1,27 @@
 package com.smalaca.usermanagementconsumer.notification;
 
-import com.smalaca.usermanagementconsumer.infrastructure.usermanagement.producer.UserDto;
 import com.smalaca.usermanagementconsumer.infrastructure.usermanagement.producer.UserManagementProducer;
+import com.smalaca.usermanagementconsumer.infrastructure.usermanagement.producer.UserManagementProducerContract;
+import com.smalaca.usermanagementconsumer.infrastructure.usermanagement.producer.UserManagementProducerScenario;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 class MessageFactoryTest {
-    private static final String GROUP = "Avengers";
-
     private final UserManagementProducer producer = mock(UserManagementProducer.class);
+    private final UserManagementProducerContract contract = UserManagementProducerContract.create();
     private final MessageFactory factory = new MessageFactory(producer);
 
     @Test
     void shouldCreateMessagesForExistingGroup() {
-        given(producer.findAllForGroup(GROUP)).willReturn(Arrays.asList(
-                new UserDto("Captain America", UUID.randomUUID().toString(), GROUP),
-                new UserDto("Tony Stark", UUID.randomUUID().toString(), GROUP),
-                new UserDto("Odinson", UUID.randomUUID().toString(), GROUP)
-        ));
+        UserManagementProducerScenario scenario = contract.usersFound();
+        given(producer.findAllForGroup(scenario.getRequest())).willReturn(scenario.getResponse());
 
-        List<Message> actual = factory.createFor(GROUP);
+        List<Message> actual = factory.createFor(scenario.getRequest());
 
         assertThat(actual).containsExactlyInAnyOrder(
                 Message.to("Captain America").body("Hello!"),
@@ -38,9 +32,10 @@ class MessageFactoryTest {
 
     @Test
     void shouldCreateNoMessagesForNotExistingGroup() {
-        given(producer.findAllForGroup(GROUP)).willReturn(emptyList());
+        UserManagementProducerScenario scenario = contract.usersNotFoundForNotExistingGroup();
+        given(producer.findAllForGroup(scenario.getRequest())).willReturn(scenario.getResponse());
 
-        List<Message> actual = factory.createFor(GROUP);
+        List<Message> actual = factory.createFor(scenario.getRequest());
 
         assertThat(actual).isEmpty();
     }
