@@ -1,28 +1,26 @@
 package com.smalaca.productmanagementconsumer.infrastructure.productmanagement.producer;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@AutoConfigureStubRunner(
+        ids = {"com.smalaca:product-management:+:stubs:8200"},
+        stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 class ProductManagementProducerCreateProductTest {
-    private static final Long SHOP_ID = 42L;
-
-    private final ProductManagementProducer producer = new ProductManagementProducerFactory().productManagementProducer();
-
-    @BeforeEach
-    void removeAllFromShop() {
-        producer.findAllForShopId(SHOP_ID).forEach(dto -> {
-            producer.delete(dto.getId());
-        });
-    }
+    @Autowired private ProductManagementProducer producer;
 
     @Test
     void shouldCreateProduct() {
-        Optional<Long> actual = producer.create(new ProductDto("Water", "Something to drink", BigDecimal.valueOf(123.45), SHOP_ID));
+        Optional<Long> actual = producer.create(new ProductDto("Water", "SomethingToDrink", BigDecimal.valueOf(123.45), 42L));
 
         assertThat(actual)
                 .isPresent()
@@ -31,18 +29,14 @@ class ProductManagementProducerCreateProductTest {
 
     @Test
     void shouldNotCreateProductWhenItAlreadyExists() {
-        producer.create(new ProductDto("Coffee", "Something to drink", BigDecimal.valueOf(123.45), SHOP_ID));
-
-        Optional<Long> actual = producer.create(new ProductDto("Coffee", "Something to drink", BigDecimal.valueOf(123.45), SHOP_ID));
+        Optional<Long> actual = producer.create(new ProductDto("Coffee", "SomethingToDrink", BigDecimal.valueOf(123.45), 13L));
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     void shouldNotCreateProductWhenShopDoesNotExist() {
-        producer.create(new ProductDto("Coffee", "Something to drink", BigDecimal.valueOf(123.45), SHOP_ID));
-
-        Optional<Long> actual = producer.create(new ProductDto("Coffee", "Something to drink", BigDecimal.valueOf(123.45), SHOP_ID));
+        Optional<Long> actual = producer.create(new ProductDto("Coffee", "SomethingToDrink", BigDecimal.valueOf(123.45), 7L));
 
         assertThat(actual).isEmpty();
     }
