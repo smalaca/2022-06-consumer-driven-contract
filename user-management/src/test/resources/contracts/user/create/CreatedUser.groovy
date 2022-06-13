@@ -18,6 +18,9 @@ Contract.make {
     }
     response {
         status CREATED()
+        headers {
+            contentType(applicationJson())
+        }
         body(
                 id: regex("[0-9]+"),
                 login: fromRequest().body('$.login'),
